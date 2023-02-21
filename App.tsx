@@ -13,9 +13,13 @@ function App(): JSX.Element {
   return (
     <View style={styles.page}>
       <View style={styles.container}>
-        <MapboxGL.MapView style={styles.map}>
-          <MapboxGL.Camera zoomLevel={4} centerCoordinate={coordinates} />
-          <MapboxGL.PointAnnotation coordinate={coordinates} />
+        <MapboxGL.MapView
+          style={{ flex: 1 }}
+          styleURL={'mapbox://styles/mapbox/streets-v12'}
+          zoomEnabled
+        >
+          <MapboxGL.Camera zoomLevel={8} centerCoordinate={coordinates} />
+          <MapboxGL.UserLocation />
         </MapboxGL.MapView>
       </View>
     </View>
