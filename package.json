@@ -10,7 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@rnmapbox/maps": "rnmapbox/maps#main",
+    "@mapbox/mapbox-sdk": "^0.15.0",
+    "@rnmapbox/maps": "10.0.0-beta.70",
     "react": "18.2.0",
     "react-native": "0.71.3"
   },
@@ -21,6 +22,7 @@
     "@react-native-community/eslint-config": "^3.2.0",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",
+    "@types/mapbox__mapbox-sdk": "^0.13.4",
     "@types/react": "^18.0.24",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",

@@ -1,45 +1,76 @@
 import React from 'react';
 import MapboxGL from '@rnmapbox/maps';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
+import { UserTrackingMode } from '@rnmapbox/maps/javascript/components/Camera';
 
-const MAPBOX_TOKEN =
+export const MAPBOX_TOKEN =
   'pk.eyJ1IjoiYXJhdmluZC1reXJvIiwiYSI6ImNsZDhobXBnOTAwNXUzbm53cjBrNG9hcmsifQ.UqTaW425cc4HhwpV_fQ82g';
 
 MapboxGL.setAccessToken(MAPBOX_TOKEN);
 
-function App(): JSX.Element {
-  const [coordinates] = React.useState([78.9629, 20.5937]);
+function MapView(): JSX.Element {
+  const hasLocationPermission = async () => {
+    if (
+      Platform.OS === 'ios' ||
+      (Platform.OS === 'android' && Platform.Version < 23)
+    ) {
+      return true;
+    }
+    const isGranted = await MapboxGL.requestAndroidLocationPermissions();
+    return isGranted;
+  };
+
+  React.useEffect(() => {
+    const task = async () => {
+      await hasLocationPermission();
+    };
+    task();
+  }, [false]);
 
   return (
     <View style={styles.page}>
       <View style={styles.container}>
         <MapboxGL.MapView
-          style={{ flex: 1 }}
-          styleURL={'mapbox://styles/mapbox/streets-v12'}
-          zoomEnabled
+          style={styles.map}
+          compassEnabled={true}
+          logoEnabled={false}
         >
-          <MapboxGL.Camera zoomLevel={8} centerCoordinate={coordinates} />
-          <MapboxGL.UserLocation />
+          <MapboxGL.UserLocation
+            androidRenderMode={'compass'}
+            visible={true}
+            onUpdate={(location) => {
+              console.log('[LocationView.coordinates]', location);
+            }}
+            showsUserHeadingIndicator={false}
+          />
+          <MapboxGL.Camera
+            zoomLevel={5}
+            followUserMode={UserTrackingMode.FollowWithHeading}
+            followUserLocation
+          />
         </MapboxGL.MapView>
       </View>
     </View>
   );
 }
 
-export default App;
-
 const styles = StyleSheet.create({
   page: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
   container: {
-    height: '100%',
+    flex: 1,
     width: '100%',
-    backgroundColor: 'blue',
+    backgroundColor: 'tomato',
   },
   map: {
     flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 });
+
+export default MapView;
