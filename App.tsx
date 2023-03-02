@@ -148,6 +148,19 @@ const MapScreen = () => {
             animationMode='easeTo'
           />
           {results.map((result) => (
+            <TouchableWithoutFeedback
+              key={result.id}
+              onPress={() => onResultPress(result)}
+            >
+              <MapboxGL.PointAnnotation
+                id={result.id}
+                coordinate={result.center}
+                title={result.place_name}
+                selected={false}
+              />
+            </TouchableWithoutFeedback>
+          ))}
+          {results.map((result) => (
             <MapboxGL.PointAnnotation
               key={result.id}
               id={result.id}
