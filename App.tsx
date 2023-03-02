@@ -22,6 +22,7 @@ const MapScreen = () => {
   const [marker, setMarker] = useState<number[] | null>([
     -122.406417, 37.785834,
   ]);
+  const [zoomLevel, setZoomLevel] = useState<number>(24);
   const [searchText, setSearchText] = useState('');
   const [results, setResults] = useState<GeocodeFeature[]>([]);
   const [error, setError] = useState('');
@@ -44,6 +45,7 @@ const MapScreen = () => {
       result.center.length >= 2
     ) {
       cameraRef.current?.flyTo([result.center[0], result.center[1]], 7000); // longitude and latitude along with animation duration
+      setZoomLevel(14);
       setMarker(result.center);
     }
   };
@@ -144,7 +146,7 @@ const MapScreen = () => {
           </MapboxGL.PointAnnotation>
           <MapboxGL.Camera
             ref={cameraRef}
-            zoomLevel={14}
+            zoomLevel={zoomLevel}
             animationMode='easeTo'
           />
           {results.map((result) => (
